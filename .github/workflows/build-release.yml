@@ -61,7 +61,7 @@ jobs:
         run: zip -r ubuntu_release.zip seven_days_backer_ubuntu
       
       - name: Zip Windows
-        run: zip -r windows_release.zip seven_days_backer_windows windows_create_service.cmd windows_delete_service.md
+        run: zip -r windows_release.zip seven_days_backer_windows windows_create_service.cmd windows_delete_service.cmd
 
       - name: Zip MacOS
         run: zip -r macos_release.zip seven_days_backer_macos
@@ -74,7 +74,6 @@ jobs:
         with:
           tag_name: ${{ inputs.version }}
           body_path: ./CHANGELOG.MD
-          prerelease: true
           make_latest: "true"
           files: |
             ubuntu_release.zip
