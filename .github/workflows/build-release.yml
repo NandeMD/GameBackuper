@@ -1,0 +1,84 @@
+name: Rust Build and Release
+run-name: Release ${{ inputs.version }} by ${{ github.actor }}
+
+permissions: write-all
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release'
+        required: true
+        default: 'v1.0.0'
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: ["ubuntu", "windows", "macos"]
+
+    runs-on: ${{ matrix.os }}-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install Rust toolchain
+      uses: dtolnay/rust-toolchain@stable
+
+    - name: Build project
+      run: cargo build --release
+
+    - name: Upload artifact (ubuntu, macos)
+      if: ${{ !contains(matrix.os, 'windows') }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: seven_days_backer_${{ matrix.os }}
+        path: target/release/seven_days_backer
+
+    - name: Upload artifact (windows)
+      if: ${{ contains(matrix.os, 'windows') }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: seven_days_backer_windows
+        path: target/release/seven_days_backer.exe
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [build]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Install zip
+        run: sudo apt install zip
+
+      - name: Zip Ubuntu
+        run: zip -r ubuntu_release.zip robin_ubuntu
+      
+      - name: Zip Windows
+        run: zip -r windows_release.zip robin_windows
+
+      - name: Zip MacOS
+        run: zip -r macos_release.zip robin_macos
+
+      - name: Display structure of files
+        run: ls -R
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.version }}
+          body_path: ./CHANGELOG.md
+          prerelease: true
+          make_latest: "true"
+          files: |
+            ubuntu_release.zip
+            windows_release.zip
+            macos_release.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.OWO_TOKEN }}
