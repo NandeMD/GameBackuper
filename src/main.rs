@@ -15,7 +15,10 @@ const PRINT_SPACES: usize = 15;
 
 fn load_ini_config(
 ) -> Result<(Duration, PathBuf, usize, HashMap<String, PathBuf>), Box<dyn std::error::Error>> {
-    let ini = Ini::load_from_file("Config.ini")?;
+    let ini = Ini::load_from_file("Config.ini").unwrap_or_else(|_| {
+        let default_config = include_str!("../Config.ini");
+        Ini::load_from_str(default_config).unwrap()
+    });
 
     let interval = Duration::from_secs({
         let interval_str = &ini.general_section()["intervalminutes"];

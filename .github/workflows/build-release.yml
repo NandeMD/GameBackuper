@@ -58,13 +58,13 @@ jobs:
         run: sudo apt install zip
 
       - name: Zip Ubuntu
-        run: zip -r ubuntu_release.zip seven_days_backer_ubuntu
+        run: zip -r ubuntu_release.zip seven_days_backer_ubuntu Config.ini
       
       - name: Zip Windows
-        run: zip -r windows_release.zip seven_days_backer_windows windows_create_service.cmd windows_delete_service.cmd
+        run: zip -r windows_release.zip seven_days_backer_windows windows_create_service.cmd windows_delete_service.cmd Config.ini
 
       - name: Zip MacOS
-        run: zip -r macos_release.zip seven_days_backer_macos
+        run: zip -r macos_release.zip seven_days_backer_macos Config.ini
 
       - name: Display structure of files
         run: ls -R
