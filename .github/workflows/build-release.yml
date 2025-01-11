@@ -73,7 +73,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.version }}
-          body_path: ./CHANGELOG.md
+          body_path: ./CHANGELOG.MD
           prerelease: true
           make_latest: "true"
           files: |
