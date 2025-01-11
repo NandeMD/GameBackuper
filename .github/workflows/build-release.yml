@@ -61,7 +61,7 @@ jobs:
         run: zip -r ubuntu_release.zip robin_ubuntu
       
       - name: Zip Windows
-        run: zip -r windows_release.zip robin_windows
+        run: zip -r windows_release.zip robin_windows windows_create_service.cmd windows_delete_service.md
 
       - name: Zip MacOS
         run: zip -r macos_release.zip robin_macos
