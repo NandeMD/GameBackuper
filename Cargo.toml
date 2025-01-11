@@ -1,0 +1,11 @@
+[package]
+name = "seven_days_backer"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+flate2 = "1.0"
+tar = "0.4"
+rust-ini = "0.21"
+chrono = "0.4"
+colored = "2"
